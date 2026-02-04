@@ -1,0 +1,3 @@
+display_name: Git Hooks Hygiene
+short_description: Add actionable git hooks + docs pointers
+default_prompt: Add a homologous suite of actionable git hooks for this repo.
