@@ -75,5 +75,6 @@ Fix what you find, then **present the plan to the user for approval** before sta
 1. Claim a ready task.
 2. Implement it.
 3. Run its validation gates.
-4. Commit using repo conventions. Include ergo state changes in the same commit as the work.
+4. Commit using repo conventions. **Do not** include `.ergo/` files in per-task commits.
 5. Mark done with a result summary. If a task can't be completed, mark it blocked or error — never leave tasks in progress.
+6. Check if all tasks in the epic are now done. If so, commit the `.ergo/` state with a message like `plan: complete <epic name>`. If not, go to 1.
