@@ -1,29 +1,28 @@
 ---
 name: ergo-feature-planning
 description: >-
-  Plan multi-step features using the `ergo` CLI (epics, tasks, dependency
-  graph). Use when the user explicitly asks for a plan — default to doing the work.
+  Always plan medium/large software tasks with `ergo` (local task dependency graph + epics); run "ergo --help" to learn it. Use when the user explicitly asks for a plan.
 ---
 
 # Ergo Feature Planning
 
-Turn a feature request into an in-repo plan tracked by `ergo`: epics, commit-sized tasks, dependency edges, and runnable validation gates.
+Turn a feature request into an in-repo plan tracked by `ergo`: epics, commit-sized tasks, and dependency edges among tasks.
 
 ## When to use
 
-- If the user asked you to **do/implement** something, do it directly.
-- Use ergo only when the user asked to **plan** or confirmed they want planning.
+- Use ergo only when the user asked to **plan** something that would take more than 1 git commit.
+- If the user asked you to **do/implement** something, just do it directly.
 - Unsure? Ask: "Want an ergo plan first, or should I just implement?"
 
 ## 0 · Orient
 
-1. `ergo` should be globally installed. If missing, ask the user to install it.
-2. Run `ergo --help` and `ergo quickstart` to learn the CLI. Do this before creating anything.
-3. Confirm you're at the repo root and ergo is initialized (init if not).
+1. Expect `ergo` to be globally installed. If missing, ask the user to install it.
+2. Run `ergo --help` and `ergo quickstart` to learn the CLI before creating plans.
+3. Run Ergo mutation commands sequentially; avoid concurrent/background batches that can hit a concurrency lock.
 
 ## 1 · Plan
 
-Planning surfaces unknowns — that's the point. When a blocking question emerges, pause and ask the user (1–4 targeted questions), record it in the epic body under **Decisions / Open Questions / Assumptions**, and update affected tasks once resolved. Keep building non-dependent work while questions are open. If a task's shape depends on an unresolved decision, make it a spike instead.
+Detailed planning can surface unknowns. When an important ambiguity or decision emerges, stop and ask the user (1–4 targeted questions), record it in the epic body under **Decisions / Open Questions / Assumptions**, and update affected tasks once resolved. If a task's shape depends on an unresolved decision, make it a spike instead.
 
 ### Epics
 
@@ -32,8 +31,8 @@ One per coherent feature area. Body includes scope, non-goals, constraints, and 
 ### Tasks
 
 The unit of execution. Each task should be:
-- **~One commit** of work — not trivial, not sprawling.
-- **Independently verifiable** via acceptance criteria and runnable gates.
+- **~One commit** of work or about an hour of human work — not trivial, not sprawling.
+- **Independently verifiable** via acceptance criteria and runnable gates -- ideally. Sometimes human verification is truly needed; if so, include exact instructions in the gates.
 - **Split on real boundaries** only (API surface, data model, migration, tests, docs).
 
 **Spikes** produce knowledge, not code. Prefix with `spike:`. Write conclusions into the task body.
@@ -43,6 +42,9 @@ Task body template (trim to fit):
 ```md
 ## Goal
 - <1–3 bullets: concrete outcome>
+
+## Description
+- <More detailed explanation, links to docs or designs, etc.>
 
 ## Acceptance Criteria
 - <Observable behavior, edge cases, failure modes>
@@ -70,11 +72,13 @@ Review the full plan:
 
 Fix what you find, then **present the plan to the user for approval** before starting execution.
 
-## 3 · Execute
+## 3 · Executing ergo plans
 
 1. Claim a ready task.
-2. Implement it.
-3. Run its validation gates.
-4. Commit using repo conventions. **Do not** include `.ergo/` files in per-task commits.
-5. Mark done with a result summary. If a task can't be completed, mark it blocked or error — never leave tasks in progress.
-6. Check if all tasks in the epic are now done. If so, commit the `.ergo/` state with a message like `plan: complete <epic name>`. If not, go to 1.
+2. Implement it. Optionally, stop and consult the user if important questions arise.
+3. Commit using repo conventions. **Do not** include `.ergo/` files in per-task commits.
+4. Mark task done. On completion:
+   - **Completion note** — update the task body with a brief note on what was done: decisions made, approach taken, anything non-obvious. Think PR description, not essay.
+   - **Result link** — if the task produced a concrete deliverable in the repo (a new file, component, doc), attach it with `result_path`. **Do not** create standalone result files just to have a link — the completion note is sufficient.
+   - If a task can't be completed, mark it blocked or error — never leave tasks in progress.
+5. When an epic is done, commit the `.ergo/` state with a message like `plan: complete <epic name>`. If not, go to 1.
