@@ -73,6 +73,7 @@ Before presenting to the user, do a final confirmation pass:
 - **Validation** — every task has runnable gates?
 - **Risk** — 1–3 highest-risk tasks identified; spikes or mitigation added?
 - **Open calls** — all judgment calls surfaced now, not mid-implementation?
+- **Cruft** — will the planned work leave behind unowned debt? Consider cleanup tasks.
 
 Fix what you find, then **present an executive summary to the user for approval**. Concise overview of epics, key tasks, and major decisions, expressed in high-level language, minimizing jargon. Get buy-in before investing time in implementation.
 
