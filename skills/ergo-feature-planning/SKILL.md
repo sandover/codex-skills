@@ -23,7 +23,11 @@ Turn a feature request into a repo-local plan tracked by `ergo`: a backlog of we
 
 ## Planning
 
-Detailed planning naturally surfaces unknowns, ambiguities, and decisions. When these arise, interview the user thoroughly. Present options clearly with tradeoffs. Record decisions in the relevant epic body or task(s). If a task's shape depends on an unresolved decision, make it a spike instead.
+Planning naturally surfaces unknowns, ambiguities, and decisions. **Resolve them now, during planning, by asking the user.** Present options clearly with tradeoffs, get an answer, and write the decision into the epic body or task AC. Do not write "Consult Me" or "TBD" into task bodies as a way to defer a conversation you could have right now — that just creates a mid-implementation block for a future agent that has less context than you do.
+
+The test: if you can describe the options and tradeoffs to the user today, ask today. The only decisions that belong in task bodies as checkpoints are ones that literally require an implementation artifact to evaluate (e.g., "produce a UI mockup, then get approval before proceeding"). For those, write a **Checkpoint** section with the specific artifact to produce and the specific question to answer — not a vague "consult me."
+
+If a task's shape depends on an unresolved decision and the user can't or won't decide yet, make it a spike instead.
 
 Critique continuously as you build the plan — when writing one task reveals that earlier tasks should be merged or split, fix it immediately rather than deferring to a review pass.
 
@@ -43,7 +47,7 @@ The unit of execution. Each task should be:
 
 **Spikes** produce knowledge, not code. Prefix with `spike:`. Dependent tasks should note what they're waiting to learn from the spike.
 
-Task body template (trim to fit):
+Task body template (trim to fit — omit empty sections):
 
 ```md
 ## Goal
@@ -54,6 +58,11 @@ Task body template (trim to fit):
 
 ## Acceptance Criteria
 - <Observable behavior, edge cases, definition of done>
+
+## Checkpoint (rare — only when a decision requires an implementation artifact)
+- Produce: <specific artifact, e.g., "ASCII mockup of the banner layout">
+- Then ask: <specific question, e.g., "Does this information hierarchy work?">
+- Do not proceed past this point without user approval.
 
 ## Validation Gates
 - <Exact commands to prove it works — tests, lint, format>
@@ -72,7 +81,7 @@ Before presenting to the user, do a final confirmation pass:
 - **Dependencies** — missing edges that'll cause churn? unnecessary edges blocking parallelism?
 - **Validation** — every task has runnable gates?
 - **Risk** — 1–3 highest-risk tasks identified; spikes or mitigation added?
-- **Open calls** — all judgment calls surfaced now, not mid-implementation?
+- **Open calls** — every judgment call resolved with the user, not deferred to task bodies? If a task still says "Consult Me" or "TBD," that's a planning failure — go ask now.
 - **Cruft** — will the planned work leave behind unowned debt? Consider cleanup tasks.
 
 Fix what you find, then **present an executive summary to the user for approval**. Concise overview of epics, key tasks, and major decisions, expressed in high-level language, minimizing jargon. Get buy-in before investing time in implementation.
